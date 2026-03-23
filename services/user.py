@@ -1,29 +1,25 @@
 from django.contrib.auth import get_user_model
 
-from db.models import User
+from django.contrib.auth.models import AbstractUser
 
 
 def create_user(
         username: str,
         password: str,
         email: str = None,
-        first_name: str = None,
-        last_name: str = None
-) -> None:
-    user = get_user_model().objects.create_user(
+        first_name: str = "",
+        last_name: str = ""
+) -> AbstractUser:
+    return get_user_model().objects.create_user(
         username=username,
-        password=password
+        password=password,
+        email=email,
+        first_name=first_name,
+        last_name=last_name
     )
-    if email:
-        user.email = email
-    if first_name:
-        user.first_name = first_name
-    if last_name:
-        user.last_name = last_name
-    user.save()
 
 
-def get_user(user_id: int) -> User:
+def get_user(user_id: int) -> AbstractUser:
     return get_user_model().objects.get(pk=user_id)
 
 

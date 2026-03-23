@@ -72,18 +72,18 @@ class Order(models.Model):
 
 class Ticket(models.Model):
     movie_session = models.ForeignKey(to=MovieSession,
-                                      on_delete=models.CASCADE)
+                                      on_delete=models.CASCADE,
+                                      related_name="tickets")
     order = models.ForeignKey(to=Order,
-                              on_delete=models.CASCADE)
+                              on_delete=models.CASCADE,
+                              related_name="tickets")
     row = models.IntegerField()
     seat = models.IntegerField()
 
     def __str__(self) -> str:
-        return (
-            f"{self.movie_session.movie.title} "
-            f"{self.movie_session.show_time} "
-            f"(row: {self.row}, seat: {self.seat})"
-        )
+        return (f"{self.movie_session.movie.title}"
+                f" {self.movie_session.show_time}"
+                f" (row: {self.row}, seat: {self.seat})")
 
     def clean(self) -> None:
         cinema_hall = self.movie_session.cinema_hall
